@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>emplist</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}" />
+        <style>
+            .a{
+                width:15px;
+                height: 15px;
+                border:1px solid grey;
+                cursor:pointer;
+                display: inline-block;
+                text-align: center;
+                line-height: 15px;
+            }
+            .b{
+                border:0;
+                width:15px;
+                height: 15px;
+                cursor:pointer;
+                display: inline-block;
+                text-align: center;
+                line-height: 15px;
+            }
+            a{
+                text-decoration:none;
+            }
+        </style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="top_content"> 
+				<div id="header">
+					<div id="rightheader">
+						<p>
+							2009/11/20
+							<br />
+						</p>
+					</div>
+					<div id="topheader">
+						<h1 id="title">
+							<a href="#">main</a>
+						</h1>
+					</div>
+					<div id="navigation">
+					</div>
+				</div>
+				<div id="content">
+					<p id="whereami">
+					</p>
+					<h1>
+						Welcome!
+					</h1>
+					<table class="table">
+						<tr class="table_header">
+							<td>
+								ID
+							</td>
+							<td>
+								Name
+							</td>
+							<td>
+								Salary
+							</td>
+							<td>
+								Age
+							</td>
+							<td>
+								Operation
+							</td>
+						</tr>
+                        {% for info in page.items %}
+						<tr class="row1">
+							<td>
+								{{ info.id }}
+							</td>
+							<td>
+								{{ info.name }}
+							</td>
+							<td>
+								{{ info.salary }}
+							</td>
+							<td>
+								{{ info.age }}
+							</td>
+							<td>
+                                {% if number >1 %}
+                                    {% if page.items | length == 1 %}
+                                        <a href="/deleteemp/?number={{ page.prev_num }}&id={{ info.id }}">delete emp</a>
+                                    {% else %}
+                                        <a href="/deleteemp/?number={{ number }}&id={{ info.id }}">delete emp</a>
+								&nbsp;  {% endif %}
+                                {% else %}
+                                    <a href="/deleteemp/?number={{ number }}&id={{ info.id }}">delete emp</a>
+                                {% endif %}
+                                <a href="/updateemp/?number={{ number }}&id={{ info.id }}">update emp</a>
+							</td>
+						</tr>
+                        {% endfor %}
+{#						<tr class="row2">#}
+{#							<td>#}
+{#								2#}
+{#							</td>#}
+{#							<td>#}
+{#								lishi#}
+{#							</td>#}
+{#							<td>#}
+{#								20000#}
+{#							</td>#}
+{#							<td>#}
+{#								20#}
+{#							</td>#}
+{#							<td>#}
+{#								<a href="emplist.html">delete emp</a>&nbsp;<a href="updateEmp.html">update emp</a>#}
+{#							</td>#}
+{#						</tr>#}
+					</table>
+                    {% if page.has_prev %}
+                        <a href="/emplist/?number={{ page.prev_num }}">上一页</a>
+                    {% endif %}
+                    {% for p in page.iter_pages() %}
+                        {% if p == number %}
+                            <a href="/emplist/?number={{ p }}" class="b">{{ p }}</a>
+                        {% else %}
+                            <a href="/emplist/?number={{ p }}" class="a">{{ p }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page.has_next %}
+                        <a href="/emplist/?number={{ page.next_num }}">下一页</a>
+                    {% endif %}
+					<p>
+						<input type="button" class="button" value="Add Employee" onclick="location='/addemp/?number={{ number }}'"/>
+					</p>
+				</div>
+			</div>
+			<div id="footer">
+				<div id="footer_bg">
+				ABC@126.com
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
